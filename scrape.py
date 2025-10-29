@@ -19,7 +19,8 @@ def main() -> None:
         print("Error: Request timed out after 30 seconds")
         return
     except requests.exceptions.HTTPError as e:
-        print(f"Error: HTTP error occurred (status code: {e.response.status_code})")
+        status = e.response.status_code if e.response else "unknown"
+        print(f"Error: HTTP error occurred (status code: {status})")
         return
     except requests.exceptions.ConnectionError:
         print("Error: Failed to connect to the server")
