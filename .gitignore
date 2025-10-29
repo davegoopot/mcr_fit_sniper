@@ -1,0 +1,6 @@
+# Downloaded HTML files
+fit.html
+
+# Python cache
+__pycache__/
+*.pyc
