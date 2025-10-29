@@ -12,22 +12,8 @@ def main() -> None:
     url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c/2025-10-29/by-time"
     
     print(f"Downloading content from {url}...")
-    try:
-        response = requests.get(url, timeout=30)
-        response.raise_for_status()
-    except requests.exceptions.Timeout:
-        print("Error: Request timed out after 30 seconds")
-        return
-    except requests.exceptions.HTTPError as e:
-        status = e.response.status_code if e.response else "unknown"
-        print(f"Error: HTTP error occurred (status code: {status})")
-        return
-    except requests.exceptions.ConnectionError:
-        print("Error: Failed to connect to the server")
-        return
-    except requests.exceptions.RequestException:
-        print("Error: An error occurred while downloading the content")
-        return
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
     
     with open("fit.html", "w", encoding="utf-8") as f:
         f.write(response.text)
