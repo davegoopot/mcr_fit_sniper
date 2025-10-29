@@ -15,7 +15,7 @@ def extract_active_dates(html_file: str = "fit.html") -> list[str]:
     html_path = Path(html_file)
     
     if not html_path.exists():
-        print(f"Error: {html_file} not found!")
+        print(f"Error: {html_file} not found! Please ensure the HTML file exists in the current directory.")
         return []
     
     with open(html_path, 'r', encoding='utf-8') as f:
