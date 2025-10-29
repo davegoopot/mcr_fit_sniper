@@ -9,7 +9,7 @@ import requests
 
 
 def main() -> None:
-    url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c/2025-10-29/by-time"
+    url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c"
     
     print(f"Downloading content from {url}...")
     response = requests.get(url, timeout=30)
