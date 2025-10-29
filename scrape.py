@@ -18,14 +18,14 @@ def main() -> None:
     except requests.exceptions.Timeout:
         print("Error: Request timed out after 30 seconds")
         return
-    except requests.exceptions.ConnectionError as e:
-        print(f"Error: Failed to connect to the server: {e}")
-        return
     except requests.exceptions.HTTPError as e:
-        print(f"Error: HTTP error occurred: {e}")
+        print(f"Error: HTTP error occurred (status code: {e.response.status_code})")
         return
-    except requests.exceptions.RequestException as e:
-        print(f"Error: An error occurred while downloading: {e}")
+    except requests.exceptions.ConnectionError:
+        print("Error: Failed to connect to the server")
+        return
+    except requests.exceptions.RequestException:
+        print("Error: An error occurred while downloading the content")
         return
     
     with open("fit.html", "w", encoding="utf-8") as f:
