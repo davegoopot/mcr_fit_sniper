@@ -6,8 +6,27 @@
 # ]
 # ///
 
+import requests
 from pathlib import Path
 from bs4 import BeautifulSoup
+
+
+def download_html(url: str, output_file: str = "fit.html") -> None:
+    """Download HTML content from the website and save to a file."""
+    # Add User-Agent header to avoid 403 Forbidden error
+    # Using a friendly crawler identifier instead of faking a browser
+    headers = {
+        "User-Agent": "MCR Fitness Class Sniper Bot (https://github.com/davegoopot/mcr_fit_sniper)"
+    }
+    
+    print(f"Downloading content from {url}...")
+    response = requests.get(url, headers=headers, timeout=30)
+    response.raise_for_status()
+    
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(response.text)
+    
+    print(f"Content saved to {output_file}")
 
 
 def extract_active_dates(html_file: str = "fit.html") -> list[str]:
@@ -36,6 +55,12 @@ def extract_active_dates(html_file: str = "fit.html") -> list[str]:
 
 
 def main() -> None:
+    url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c"
+    
+    # Download the HTML content
+    download_html(url)
+    
+    # Extract and print active dates
     active_dates = extract_active_dates()
     
     if active_dates:
