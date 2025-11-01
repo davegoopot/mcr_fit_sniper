@@ -1,6 +1,9 @@
 # Downloaded HTML files
 fit.html
 
+# Latest class tracking file
+latestclass.txt
+
 # Python cache
 __pycache__/
 *.pyc

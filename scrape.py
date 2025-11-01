@@ -8,6 +8,7 @@
 import requests
 import json
 from datetime import datetime
+from pathlib import Path
 
 
 def fetch_active_dates(venue: str = "hough-end-leisure-centre", 
@@ -40,6 +41,29 @@ def fetch_active_dates(venue: str = "hough-end-leisure-centre",
     return data.get("data", [])
 
 
+def save_latest_date(latest_date: str) -> tuple[str | None, bool]:
+    """
+    Save the latest date to latestclass.txt and check if it changed.
+    
+    Returns:
+        tuple: (previous_date, has_changed)
+    """
+    latest_class_file = Path("latestclass.txt")
+    previous_date = None
+    
+    # Read previous date if file exists
+    if latest_class_file.exists():
+        previous_date = latest_class_file.read_text().strip()
+    
+    # Write the new latest date
+    latest_class_file.write_text(latest_date)
+    
+    # Check if date has changed
+    has_changed = previous_date is not None and previous_date != latest_date
+    
+    return previous_date, has_changed
+
+
 def main() -> None:
     try:
         # Fetch available dates from the API
@@ -58,6 +82,28 @@ def main() -> None:
                 
                 today_marker = " (TODAY)" if is_today else ""
                 print(f"  {day} - {full_date}{today_marker}")
+            
+            # Find the latest date (dates are returned in order, last one is latest)
+            latest_date_info = dates[-1]
+            latest_date = latest_date_info.get("raw", "")
+            latest_date_pretty = latest_date_info.get("full_date_pretty", "")
+            
+            if latest_date:
+                # Save to file and check for changes
+                previous_date, has_changed = save_latest_date(latest_date)
+                
+                print(f"\n--- Latest Class Date ---")
+                print(f"Latest date: {latest_date_pretty} ({latest_date})")
+                print(f"Saved to: latestclass.txt")
+                
+                if has_changed:
+                    print(f"\n⚠️  ALERT: Latest class date has changed!")
+                    print(f"   Previous: {previous_date}")
+                    print(f"   Current:  {latest_date}")
+                elif previous_date is not None:
+                    print(f"\nℹ️  No change in latest class date.")
+                else:
+                    print(f"\nℹ️  First time tracking - no previous date to compare.")
         else:
             print("No active class dates found.")
             
