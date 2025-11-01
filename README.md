@@ -4,26 +4,17 @@ Tools to help book fitness classes in the Manchester, UK area.
 ## Scripts
 
 ### scrape.py
-Original scraping script. Downloads fitness class information from the booking website.
+Main scraping script that downloads fitness class information from the booking website and extracts active class dates.
 
-**Note:** This script may encounter 403 Forbidden errors due to missing browser headers. See troubleshooting below.
-
-### scrape_fixed.py
-Updated version of scrape.py with proper browser headers to avoid 403 errors. Use this if you're getting blocked.
+The script includes proper User-Agent headers to avoid 403 Forbidden errors.
 
 ```bash
-python3 scrape_fixed.py
+python3 scrape.py
 ```
 
 ## Troubleshooting 403 Errors
 
 If you're getting a **403 Forbidden** error when running scrape.py, we've provided diagnostic tools to help:
-
-### Quick Fix
-Try the updated script with proper headers:
-```bash
-python3 scrape_fixed.py
-```
 
 ### Diagnostic Tools
 
