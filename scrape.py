@@ -42,14 +42,44 @@ def extract_active_dates(html_file: str = "fit.html") -> list[str]:
     
     soup = BeautifulSoup(html_content, 'html.parser')
     
+    print(f"Debug: HTML file size: {len(html_content)} bytes")
+    
     # Find all bold tags containing day numbers
     bold_dates = soup.find_all('b')
+    print(f"Debug: Found {len(bold_dates)} <b> tags")
+    
+    # Also try <strong> tags as an alternative
+    strong_dates = soup.find_all('strong')
+    print(f"Debug: Found {len(strong_dates)} <strong> tags")
+    
+    # Combine both bold and strong tags
+    all_emphasized = bold_dates + strong_dates
     
     active_dates = []
-    for bold in bold_dates:
-        date_text = bold.get_text(strip=True)
+    for tag in all_emphasized:
+        date_text = tag.get_text(strip=True)
         if date_text.isdigit():
             active_dates.append(date_text)
+            print(f"Debug: Found date in <{tag.name}> tag: {date_text}")
+    
+    # If no dates found in bold/strong tags, look for dates in elements with specific classes
+    # that might indicate active dates (common patterns: "active", "available", "has-classes")
+    if not active_dates:
+        print("Debug: No dates found in <b> or <strong> tags, trying class-based search...")
+        
+        # Look for common class patterns that indicate active/available dates
+        for class_pattern in ['active', 'available', 'has-classes', 'enabled', 'bookable']:
+            elements = soup.find_all(class_=lambda x: x and class_pattern in x.lower() if x else False)
+            print(f"Debug: Found {len(elements)} elements with '{class_pattern}' in class name")
+            
+            for elem in elements:
+                # Look for date numbers within these elements
+                text = elem.get_text(strip=True)
+                # Check if it's a 1 or 2 digit number (day of month)
+                if text.isdigit() and 1 <= int(text) <= 31:
+                    if text not in active_dates:
+                        active_dates.append(text)
+                        print(f"Debug: Found date in element with class '{elem.get('class')}': {text}")
     
     return active_dates
 
@@ -61,14 +91,22 @@ def main() -> None:
     download_html(url)
     
     # Extract and print active dates
+    print("\n--- Extracting active dates ---")
     active_dates = extract_active_dates()
     
+    print(f"\n--- Results ---")
     if active_dates:
         print("Active class dates:")
         for date in active_dates:
             print(f"  {date}")
     else:
         print("No active class dates found.")
+        print("\nTo help diagnose the issue, please check fit.html and look for how dates are marked.")
+        print("Active dates might be indicated by:")
+        print("  - <b> or <strong> tags")
+        print("  - CSS classes like 'active', 'available', 'has-classes'")
+        print("  - Other HTML attributes")
+        print("\nYou can share a snippet of the HTML around a date that should be active.")
 
 
 if __name__ == "__main__":
