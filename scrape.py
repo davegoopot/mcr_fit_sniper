@@ -12,8 +12,9 @@ def main() -> None:
     url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c"
     
     # Add User-Agent header to avoid 403 Forbidden error
+    # Using a friendly crawler identifier instead of faking a browser
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "MCR Fitness Class Sniper Bot (https://github.com/davegoopot/mcr_fit_sniper)"
     }
     
     print(f"Downloading content from {url}...")
