@@ -16,7 +16,18 @@ def fetch_active_dates(venue: str = "hough-end-leisure-centre",
     api_url = f"https://better-admin.org.uk/api/activities/venue/{venue}/activity-category/{activity_category}/dates"
     
     headers = {
-        "User-Agent": "MCR Fitness Class Sniper Bot (https://github.com/davegoopot/mcr_fit_sniper)"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0",
+        "Accept": "application/json",
+        "Accept-Language": "en-GB,en;q=0.9",
+        "Origin": "https://bookings.better.org.uk",
+        "Priority": "u=1, i",
+        "Referer": f"https://bookings.better.org.uk/location/{venue}/{activity_category}",
+        "Sec-CH-UA": '"Microsoft Edge";v="141", "Not?A_Brand";v="8", "Chromium";v="141"',
+        "Sec-CH-UA-Mobile": "?0",
+        "Sec-CH-UA-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "cross-site",
     }
     
     print(f"Fetching available dates from API...")
