@@ -6,7 +6,7 @@ This guide explains the 403 error you're experiencing and how to diagnose and fi
 
 A **403 Forbidden** error means the server understood your request but refuses to authorize it. This is different from a 404 (Not Found) or 401 (Unauthorized). Common causes include:
 
-1. **Missing or incorrect User-Agent header** - Many websites block requests that don't look like they're coming from a real browser
+1. **Missing or incorrect User-Agent header** - Many websites block requests that don't include a User-Agent header or use one that identifies as a bot
 2. **Anti-bot protection** - Websites may use services like Cloudflare to block automated scraping
 3. **Rate limiting** - Too many requests in a short time
 4. **IP blocking** - Your IP address may be blacklisted
@@ -75,12 +75,12 @@ python3 scrape_fixed.py
 ```
 
 **What it includes:**
-- User-Agent header (Chrome on Windows)
+- Scraper-friendly User-Agent that properly identifies the bot (mcr_fit_sniper/1.0)
 - Accept headers for content types
 - Language and encoding preferences
-- Security headers (Sec-Fetch-*)
-- Cache control headers
 - Better error messages with troubleshooting tips
+
+**Note:** This script uses a scraper-friendly User-Agent that identifies itself as a bot with a reference to this repository, following web scraping best practices. Some websites may prefer this over fake browser user agents.
 
 **When to use:**
 - Try this first if you just want a quick fix
@@ -133,9 +133,9 @@ def main() -> None:
     
     # Add headers that work (from your diagnostics)
     headers = {
-        "User-Agent": "Mozilla/5.0 ...",  # Use the working User-Agent
-        "Accept": "text/html,application/xhtml+xml,...",
-        # Add other headers that helped
+        "User-Agent": "mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)",  # Scraper-friendly User-Agent
+        "Accept": "application/json",  # or "text/html,application/xhtml+xml,..." for HTML
+        # Add other headers as needed
     }
     
     response = requests.get(url, headers=headers, timeout=30)
@@ -172,13 +172,15 @@ if __name__ == "__main__":
 
 ### Understanding the Headers
 
-- **User-Agent**: Most critical - identifies your browser
+- **User-Agent**: Identifies the client making the request. For ethical scraping, use a descriptive name with a link to your project (e.g., "mcr_fit_sniper/1.0 (+URL)") instead of pretending to be a browser
 - **Accept**: Tells server what content types you can handle
 - **Accept-Language**: Language preferences (e.g., "en-US,en;q=0.9")
 - **Accept-Encoding**: Compression methods (e.g., "gzip, deflate, br")
 - **Referer**: Previous page URL (helps with navigation flows)
-- **Sec-Fetch-***: Security headers sent by modern browsers
 - **Cookie**: Session/authentication cookies (if needed)
+
+**Note on User-Agent Best Practices:**
+Following web scraping ethics, it's better to use a User-Agent that clearly identifies your bot and provides a way to contact you or learn about your project, rather than pretending to be a browser. This is respectful to website owners and follows the standards recommended by the Internet Engineering Task Force (IETF).
 
 ## Files Overview
 
@@ -190,4 +192,4 @@ if __name__ == "__main__":
 
 ## Summary
 
-The 403 error occurs because the original script doesn't send proper browser headers. The solution is to add headers that make the request look like it's coming from a real browser. Use the diagnostic tools to identify which headers work for your specific situation.
+The 403 error can occur for various reasons. This repository now uses a scraper-friendly User-Agent that properly identifies the bot instead of pretending to be a browser, following web scraping best practices. However, if you still encounter 403 errors, use the diagnostic tools to identify which headers work for your specific situation. Some websites may require additional headers or may block bots regardless of the User-Agent used.

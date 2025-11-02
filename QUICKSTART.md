@@ -4,10 +4,10 @@
 The `scrape.py` script returns a **403 Forbidden** error, but the same URL works fine in a Samsung Android browser.
 
 ## Root Cause
-The script doesn't send proper browser headers. Websites use anti-bot protection that blocks requests without:
-- User-Agent header (identifies the browser)
-- Accept headers (content types)
-- Other browser-specific headers
+The script needs a proper User-Agent header. This repository now uses a scraper-friendly User-Agent that identifies the bot and references this repository, following web scraping best practices:
+- User-Agent: mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)
+- Accept headers for content types
+- Other necessary headers
 
 ## Solution Overview
 This PR provides 3 diagnostic tools + 1 fixed script + comprehensive documentation to help you:
@@ -29,12 +29,13 @@ python3 diagnose_403.py
 ```
 
 **What it does:**
-- Test 1: Basic request (no headers) - reproduces your 403 error
-- Test 2: Minimal User-Agent
-- Test 3: Chrome User-Agent
-- Test 4: Samsung Android User-Agent (matches your working browser)
-- Test 5: Full browser headers
-- Test 6: With Referer header
+- Test 1: Basic request (no headers) - reproduces potential errors
+- Test 2: Scraper-friendly User-Agent (recommended approach)
+- Test 3: Minimal User-Agent
+- Test 4: Chrome User-Agent (pretending to be a browser)
+- Test 5: Samsung Android User-Agent (pretending to be a browser)
+- Test 6: Full browser headers (pretending to be a browser)
+- Test 7: With Referer header (pretending to be a browser)
 
 **Output:**
 - Shows which tests succeed or fail
@@ -74,23 +75,23 @@ python3 scrape_fixed.py
 ```
 
 **What it includes:**
-- User-Agent: Chrome on Windows
-- Accept headers for HTML/XML/images
+- Scraper-friendly User-Agent: mcr_fit_sniper/1.0 (+repository URL)
+- Accept headers for HTML/XML
 - Accept-Language: English
 - Accept-Encoding: gzip, deflate, br
-- Security headers: Sec-Fetch-*
-- Connection and cache control
 - Better error messages with troubleshooting tips
+
+**Note:** This uses a scraper-friendly User-Agent that properly identifies the bot instead of pretending to be a browser, following web scraping best practices.
 
 **Key differences from original:**
 ```python
-# Original scrape.py
+# Original scrape.py (old version)
 response = requests.get(url, timeout=30)
 
-# scrape_fixed.py
+# scrape.py and scrape_fixed.py (new version)
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)...",
-    "Accept": "text/html,application/xhtml+xml,...",
+    "User-Agent": "mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)",
+    "Accept": "application/json",  # or "text/html,..." for HTML content
     # ... more headers
 }
 response = requests.get(url, headers=headers, timeout=30)
@@ -135,31 +136,32 @@ Then follow instructions to capture Samsung browser headers.
 
 ## Understanding the Fix
 
-### Why Original Script Fails
+### Why Original Script May Fail
 ```python
-# This is what scrape.py sends:
+# This is what an old script might send:
 GET /location/hough-end-leisure-centre/fitness-classes-c HTTP/1.1
 Host: bookings.better.org.uk
-# ... minimal headers
+# ... minimal or no User-Agent
 ```
 
-**Server thinks:** "This doesn't look like a browser. It's probably a bot. BLOCK IT!" → 403
+**Server might think:** "This doesn't have a User-Agent or proper headers. BLOCK IT!" → 403
 
-### Why Fixed Script Works
+### Why Updated Script Uses Scraper-Friendly User-Agent
 ```python
-# This is what scrape_fixed.py sends:
+# This is what scrape.py and scrape_fixed.py now send:
 GET /location/hough-end-leisure-centre/fitness-classes-c HTTP/1.1
 Host: bookings.better.org.uk
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9...
-Accept-Language: en-US,en;q=0.9
-Accept-Encoding: gzip, deflate, br
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
+User-Agent: mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)
+Accept: application/json
+Accept-Language: en-GB,en;q=0.9
 # ... more headers
 ```
 
-**Server thinks:** "This looks like Chrome browser. Okay, proceed!" → 200 OK
+**This approach:**
+- Properly identifies the bot (transparent and ethical)
+- Provides a way for website owners to learn about/contact the project
+- Follows web scraping best practices (RFC 9309)
+- Is more respectful than pretending to be a browser
 
 ---
 
@@ -213,9 +215,10 @@ If you're still having issues:
 
 ## Summary
 
-**Problem:** 403 Forbidden error due to missing browser headers  
-**Solution:** Add proper User-Agent and browser headers  
-**Tools Provided:** 3 diagnostic scripts + 1 fixed script + comprehensive docs  
-**Time to Fix:** 1-2 minutes with scrape_fixed.py, or 5-10 minutes with diagnostics  
+**Problem:** HTTP errors can occur due to missing or improper headers  
+**Solution:** Use a scraper-friendly User-Agent that identifies the bot and references the repository  
+**Approach:** Transparent and ethical web scraping following best practices  
+**Tools Provided:** Diagnostic scripts + updated scripts + comprehensive docs  
+**Time to Fix:** Immediate - scripts are already updated!  
 
-✅ All scripts are tested and ready to use!
+✅ All scripts now use scraper-friendly User-Agent!
