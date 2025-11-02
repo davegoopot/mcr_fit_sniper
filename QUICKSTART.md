@@ -160,7 +160,7 @@ Accept-Language: en-GB,en;q=0.9
 **This approach:**
 - Properly identifies the bot (transparent and ethical)
 - Provides a way for website owners to learn about/contact the project
-- Follows web scraping best practices (RFC 9309)
+- Follows web scraping best practices
 - Is more respectful than pretending to be a browser
 
 ---

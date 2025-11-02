@@ -180,7 +180,7 @@ if __name__ == "__main__":
 - **Cookie**: Session/authentication cookies (if needed)
 
 **Note on User-Agent Best Practices:**
-Following web scraping ethics, it's better to use a User-Agent that clearly identifies your bot and provides a way to contact you or learn about your project, rather than pretending to be a browser. This is respectful to website owners and follows the standards recommended by the Internet Engineering Task Force (IETF).
+Following web scraping ethics, it's better to use a User-Agent that clearly identifies your bot and provides a way to contact you or learn about your project, rather than pretending to be a browser. This is respectful to website owners and follows industry best practices for responsible web scraping.
 
 ## Files Overview
 
