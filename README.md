@@ -33,7 +33,7 @@ You can use `termux-job-scheduler` to schedule the script to run every 30 minute
    ```bash
    #!/data/data/com.termux/files/usr/bin/bash
    cd ~/mcr_fit_sniper
-   python3 scrape.py >> ~/mcr_fit_sniper/scrape.log 2>&1
+   uv run scrape.py >> ~/mcr_fit_sniper/scrape.log 2>&1
    ```
    
    Note: Replace `~/mcr_fit_sniper` with your actual repository path.
@@ -64,18 +64,13 @@ tail -f ~/mcr_fit_sniper/scrape.log
 
 ### Keeping Termux Running
 
-For the scheduled tasks to work reliably:
+The `termux-job-scheduler` uses Android's JobScheduler API, which handles scheduling reliably in the background. However:
 
-1. **Acquire a wakelock** to prevent Termux from being killed:
-   ```bash
-   termux-wake-lock
-   ```
-
-2. **Disable battery optimization** for Termux in Android settings:
-   - Go to Settings → Apps → Termux
-   - Battery → Unrestricted
-
-3. Consider using **Termux:Boot** to start services automatically on device boot.
+1. **Disable battery optimization** for both Termux and Termux:API in Android settings:
+   - Go to Settings → Apps → Termux → Battery → Unrestricted
+   - Go to Settings → Apps → Termux:API → Battery → Unrestricted
+   
+   This ensures the Termux:API app can execute scheduled jobs even when the device is in power-saving mode.
 
 ## Troubleshooting 403 Errors
 
