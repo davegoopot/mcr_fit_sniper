@@ -54,17 +54,8 @@ def is_termux() -> bool:
     # Check for TERMUX_VERSION environment variable
     if os.environ.get("TERMUX_VERSION"):
         return True
-    
-    # Check if PREFIX points to Termux directory
-    prefix = os.environ.get("PREFIX", "")
-    if prefix and "com.termux" in prefix:
-        return True
-    
-    # Check if termux-notification command is available
-    if shutil.which("termux-notification"):
-        return True
-    
-    return False
+    else:
+        return False
 
 
 def send_termux_notification(title: str, content: str) -> bool:
