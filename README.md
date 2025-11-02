@@ -12,6 +12,77 @@ The script uses a scraper-friendly User-Agent that properly identifies the bot a
 python3 scrape.py
 ```
 
+## Running on Termux (Android)
+
+You can run this script automatically every 30 minutes on your Android device using Termux. This is useful for continuously monitoring new fitness class availability.
+
+### Using Termux:API Job Scheduler
+
+You can use `termux-job-scheduler` to schedule the script to run every 30 minutes (requires Termux:API app):
+
+#### Quick Setup (Recommended)
+
+1. **Install Termux:API:**
+   - Install the Termux:API app from F-Droid
+   - Install the API package: `pkg install termux-api`
+
+2. **Run the installation script:**
+   ```bash
+   ./install_scheduler.sh
+   ```
+   
+   This script will automatically:
+   - Update `run-scraper.sh` with the correct repository path
+   - Make the script executable
+   - Schedule the job to run every 30 minutes
+
+#### Manual Setup
+
+If you prefer to set up manually:
+
+1. **Install Termux:API:**
+   - Install the Termux:API app from F-Droid
+   - Install the API package: `pkg install termux-api`
+
+2. **Set up the scheduler script:**
+   
+   The repository includes `run-scraper.sh` which is pre-configured to run the scraper. If you cloned the repository to a different location, edit the script to update the paths:
+   
+   ```bash
+   nano run-scraper.sh
+   ```
+   
+   Update the paths in the script to match your repository location (replace `~/mcr_fit_sniper` with your actual path).
+
+3. **Schedule the job to run every 30 minutes:**
+   ```bash
+   termux-job-scheduler --script ./run-scraper.sh --period-ms 1800000
+   ```
+   
+   Note: 1800000 milliseconds = 30 minutes
+
+### Monitoring the Script
+
+To view the output from automated runs (replace `~/mcr_fit_sniper` with your repository path):
+
+```bash
+# View the last 50 lines of the log
+tail -n 50 ~/mcr_fit_sniper/scrape.log
+
+# Watch the log in real-time
+tail -f ~/mcr_fit_sniper/scrape.log
+```
+
+### Keeping Termux Running
+
+The `termux-job-scheduler` uses Android's JobScheduler API, which handles scheduling reliably in the background. However:
+
+1. **Disable battery optimization** for both Termux and Termux:API in Android settings:
+   - Go to Settings → Apps → Termux → Battery → Unrestricted
+   - Go to Settings → Apps → Termux:API → Battery → Unrestricted
+   
+   This ensures the Termux:API app can execute scheduled jobs even when the device is in power-saving mode.
+
 ## Troubleshooting 403 Errors
 
 If you're getting a **403 Forbidden** error when running scrape.py, we've provided diagnostic tools to help:
