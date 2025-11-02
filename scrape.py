@@ -72,18 +72,15 @@ def send_termux_notification(title: str, content: str) -> bool:
     if not is_termux():
         return False
     
-    try:
-        # Use termux-notification command to send notification
-        subprocess.run(
+    
+    subprocess.run(
             ["termux-notification", "--title", title, "--content", content],
             check=True,
             capture_output=True,
             timeout=5
         )
-        return True
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-        # If termux-notification fails or doesn't exist, return False
-        return False
+    
+    return True
 
 
 def save_latest_date(latest_date: str) -> tuple[str | None, bool]:
