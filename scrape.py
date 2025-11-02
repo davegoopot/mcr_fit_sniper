@@ -9,6 +9,9 @@ import requests
 import json
 from datetime import datetime
 from pathlib import Path
+import os
+import subprocess
+import shutil
 
 
 def fetch_active_dates(venue: str = "hough-end-leisure-centre", 
@@ -32,6 +35,45 @@ def fetch_active_dates(venue: str = "hough-end-leisure-centre",
     
     data = response.json()
     return data.get("data", [])
+
+
+def is_termux() -> bool:
+    """
+    Check if the script is running in Termux environment.
+    
+    Returns:
+        bool: True if running in Termux, False otherwise
+    """
+    # Check for TERMUX_VERSION environment variable
+    if os.environ.get("TERMUX_VERSION"):
+        return True
+    else:
+        return False
+
+
+def send_termux_notification(title: str, content: str) -> bool:
+    """
+    Send a notification via Termux if available.
+    
+    Args:
+        title: The notification title
+        content: The notification content
+        
+    Returns:
+        bool: True if notification was sent successfully, False otherwise
+    """
+    if not is_termux():
+        return False
+    
+    
+    subprocess.run(
+            ["termux-notification", "--title", title, "--content", content],
+            check=True,
+            capture_output=True,
+            timeout=5
+        )
+    
+    return True
 
 
 def save_latest_date(latest_date: str) -> tuple[str | None, bool]:
@@ -93,6 +135,13 @@ def main() -> None:
                     print(f"\n⚠️  ALERT: Latest class date has changed!")
                     print(f"   Previous: {previous_date}")
                     print(f"   Current:  {latest_date}")
+                    
+                    # Send Termux notification if running in Termux
+                    if send_termux_notification(
+                        title="Fitness Class Date Changed",
+                        content=f"New latest date: {latest_date_pretty} (was: {previous_date})"
+                    ):
+                        print(f"   📱 Termux notification sent")
                 elif previous_date is not None:
                     print(f"\nℹ️  No change in latest class date.")
                 else:
