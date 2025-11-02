@@ -47,10 +47,10 @@ Cronie provides traditional cron functionality in Termux.
 
 3. **Add the following line to run the script every 30 minutes:**
    ```bash
-   */30 * * * * cd /data/data/com.termux/files/home/mcr_fit_sniper && python3 scrape.py >> scrape.log 2>&1
+   */30 * * * * cd ~/mcr_fit_sniper && python3 scrape.py >> scrape.log 2>&1
    ```
    
-   Note: Replace `/data/data/com.termux/files/home/mcr_fit_sniper` with the actual path to your cloned repository.
+   Note: Replace `~/mcr_fit_sniper` with the actual path to your cloned repository (e.g., `~/fitness-scraper` if you cloned it with a different name).
 
 4. **Save and exit the editor** (in nano: Ctrl+X, then Y, then Enter)
 
@@ -78,6 +78,8 @@ If you prefer using Android's native job scheduler, you can use `termux-job-sche
    cd ~/mcr_fit_sniper
    python3 scrape.py >> scrape.log 2>&1
    ```
+   
+   Note: Replace `~/mcr_fit_sniper` with your actual repository path.
 
 3. **Make the script executable:**
    ```bash
@@ -93,7 +95,7 @@ If you prefer using Android's native job scheduler, you can use `termux-job-sche
 
 ### Monitoring the Script
 
-To view the output from automated runs:
+To view the output from automated runs (replace `~/mcr_fit_sniper` with your repository path):
 
 ```bash
 # View the last 50 lines of the log
