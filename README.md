@@ -16,52 +16,9 @@ python3 scrape.py
 
 You can run this script automatically every 30 minutes on your Android device using Termux. This is useful for continuously monitoring new fitness class availability.
 
-### Prerequisites
+### Using Termux:API Job Scheduler
 
-First, install the required packages in Termux:
-
-```bash
-# Update packages
-pkg update && pkg upgrade
-
-# Install Python and required tools
-pkg install python git cronie termux-services
-
-# Install Python dependencies
-pip install requests
-```
-
-### Option 1: Using Cronie (Recommended)
-
-Cronie provides traditional cron functionality in Termux.
-
-1. **Start the cron service:**
-   ```bash
-   sv-enable crond
-   ```
-
-2. **Edit your crontab:**
-   ```bash
-   crontab -e
-   ```
-
-3. **Add the following line to run the script every 30 minutes:**
-   ```bash
-   */30 * * * * cd ~/mcr_fit_sniper && python3 scrape.py >> ~/mcr_fit_sniper/scrape.log 2>&1
-   ```
-   
-   Note: Replace `~/mcr_fit_sniper` with the actual path to your cloned repository (e.g., `~/fitness-scraper` if you cloned it with a different name).
-
-4. **Save and exit the editor** (in nano: Ctrl+X, then Y, then Enter)
-
-5. **Verify the cron job is scheduled:**
-   ```bash
-   crontab -l
-   ```
-
-### Option 2: Using Termux:API Job Scheduler
-
-If you prefer using Android's native job scheduler, you can use `termux-job-scheduler` (requires Termux:API app):
+You can use `termux-job-scheduler` to schedule the script to run every 30 minutes (requires Termux:API app):
 
 1. **Install Termux:API:**
    - Install the Termux:API app from F-Droid
