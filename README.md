@@ -6,7 +6,7 @@ Tools to help book fitness classes in the Manchester, UK area.
 ### scrape.py
 Main scraping script that downloads fitness class information from the booking website and extracts active class dates.
 
-The script includes proper User-Agent headers to avoid 403 Forbidden errors.
+The script uses a scraper-friendly User-Agent that properly identifies the bot and references this repository, following web scraping best practices.
 
 ```bash
 python3 scrape.py
@@ -36,4 +36,4 @@ If you're getting a **403 Forbidden** error when running scrape.py, we've provid
 
 ### Why 403 Errors Occur
 
-403 errors happen when websites block requests that don't look like they're from a real browser. The original script uses minimal headers, which triggers anti-bot protection. The solution is to add proper browser headers (User-Agent, Accept, etc.) to make requests look legitimate.
+403 errors happen when websites block requests that don't look legitimate. The script uses a scraper-friendly User-Agent (mcr_fit_sniper/1.0 +URL) that properly identifies the bot instead of pretending to be a browser, following web scraping best practices.

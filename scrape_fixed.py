@@ -8,8 +8,8 @@
 """
 Updated scrape script with proper headers to avoid 403 errors.
 
-This version includes User-Agent and other browser headers that help
-avoid being blocked by anti-bot protection.
+This version uses a scraper-friendly User-Agent that identifies the bot
+and references the repository URL, following web scraping best practices.
 """
 
 import requests
@@ -19,34 +19,21 @@ def main() -> None:
     """Download the fitness classes page with proper headers."""
     url = "https://bookings.better.org.uk/location/hough-end-leisure-centre/fitness-classes-c"
     
-    # Use headers that mimic a real browser to avoid 403 errors
-    # These headers help the request look like it's coming from a legitimate browser
+    # Use headers that identify this scraper properly
+    # Following web scraping best practices by using a descriptive User-Agent
+    # that references the repository instead of pretending to be a browser
     headers = {
-        # User-Agent identifies the browser - this is the most important header
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        # User-Agent identifies the scraper with a link to the repository
+        "User-Agent": "mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)",
         
         # Accept headers tell the server what content types we can handle
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
         "Accept-Encoding": "gzip, deflate, br",
-        
-        # Additional headers that browsers typically send
-        "DNT": "1",  # Do Not Track
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        
-        # Security-related headers that modern browsers send
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        
-        # Cache control
-        "Cache-Control": "max-age=0",
     }
     
     print(f"Downloading content from {url}...")
-    print("Using browser-like headers to avoid 403 errors...")
+    print("Using scraper-friendly User-Agent that identifies this bot...")
     
     try:
         response = requests.get(url, headers=headers, timeout=30)

@@ -9,7 +9,7 @@
 Diagnostic script to identify why we're getting 403 errors.
 
 This script tests various request configurations to identify what works
-and what causes 403 errors.
+and what causes 403 errors. It uses a scraper-friendly User-Agent by default.
 """
 
 import requests
@@ -78,7 +78,16 @@ def main() -> None:
         "Basic request (no custom headers)",
     ))
     
-    # Test 2: Request with minimal User-Agent
+    # Test 2: Request with scraper-friendly User-Agent
+    results.append(test_request(
+        url,
+        "Request with scraper-friendly User-Agent (recommended)",
+        headers={
+            "User-Agent": "mcr_fit_sniper/1.0 (+https://github.com/davegoopot/mcr_fit_sniper)"
+        }
+    ))
+    
+    # Test 3: Request with minimal User-Agent
     results.append(test_request(
         url,
         "Request with basic User-Agent",
@@ -87,28 +96,28 @@ def main() -> None:
         }
     ))
     
-    # Test 3: Request with Chrome User-Agent
+    # Test 4: Request with Chrome User-Agent
     results.append(test_request(
         url,
-        "Request with Chrome User-Agent",
+        "Request with Chrome User-Agent (pretending to be a browser)",
         headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
     ))
     
-    # Test 4: Request with Samsung Android User-Agent (since it works in Samsung browser)
+    # Test 5: Request with Samsung Android User-Agent (since it works in Samsung browser)
     results.append(test_request(
         url,
-        "Request with Samsung Android User-Agent",
+        "Request with Samsung Android User-Agent (pretending to be a browser)",
         headers={
             "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/23.0 Chrome/115.0.0.0 Mobile Safari/537.36"
         }
     ))
     
-    # Test 5: Request with full browser headers
+    # Test 6: Request with full browser headers
     results.append(test_request(
         url,
-        "Request with full browser headers",
+        "Request with full browser headers (pretending to be a browser)",
         headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -125,10 +134,10 @@ def main() -> None:
         }
     ))
     
-    # Test 6: Request with Referer header
+    # Test 7: Request with Referer header
     results.append(test_request(
         url,
-        "Request with Referer header",
+        "Request with Referer header (pretending to be a browser)",
         headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
