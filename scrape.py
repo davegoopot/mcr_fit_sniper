@@ -51,17 +51,12 @@ def save_latest_date(latest_date: str) -> tuple[str | None, bool]:
     latest_class_file = Path("latestclass.txt")
     previous_date = None
     
-    try:
-        # Read previous date if file exists
-        if latest_class_file.exists():
-            previous_date = latest_class_file.read_text().strip()
-        
-        # Write the new latest date
-        latest_class_file.write_text(latest_date)
-        
-    except (IOError, OSError) as e:
-        print(f"Warning: Error accessing latestclass.txt: {e}")
-        # Continue with comparison even if file operations failed
+    # Read previous date if file exists
+    if latest_class_file.exists():
+        previous_date = latest_class_file.read_text().strip()
+    
+    # Write the new latest date
+    latest_class_file.write_text(latest_date)
     
     # Check if date has changed
     has_changed = previous_date is not None and previous_date != latest_date
