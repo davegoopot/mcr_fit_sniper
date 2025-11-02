@@ -10,7 +10,7 @@ echo "================================================"
 echo ""
 
 # Get the absolute path of the repository (where this script is located)
-REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_DIR="$(pwd)"
 echo "Repository directory: $REPO_DIR"
 echo ""
 
