@@ -24,28 +24,19 @@ You can use `termux-job-scheduler` to schedule the script to run every 30 minute
    - Install the Termux:API app from F-Droid
    - Install the API package: `pkg install termux-api`
 
-2. **Create a script to run the scraper:**
+2. **Set up the scheduler script:**
+   
+   The repository includes `run-scraper.sh` which is pre-configured to run the scraper. If you cloned the repository to a different location, edit the script to update the paths:
+   
    ```bash
-   nano ~/run-scraper.sh
+   nano run-scraper.sh
    ```
    
-   Add the following content:
-   ```bash
-   #!/data/data/com.termux/files/usr/bin/bash
-   cd ~/mcr_fit_sniper
-   uv run scrape.py >> ~/mcr_fit_sniper/scrape.log 2>&1
-   ```
-   
-   Note: Replace `~/mcr_fit_sniper` with your actual repository path.
+   Update the paths in the script to match your repository location (replace `~/mcr_fit_sniper` with your actual path).
 
-3. **Make the script executable:**
+3. **Schedule the job to run every 30 minutes:**
    ```bash
-   chmod +x ~/run-scraper.sh
-   ```
-
-4. **Schedule the job to run every 30 minutes:**
-   ```bash
-   termux-job-scheduler --script ~/run-scraper.sh --period-ms 1800000
+   termux-job-scheduler --script ./run-scraper.sh --period-ms 1800000
    ```
    
    Note: 1800000 milliseconds = 30 minutes
