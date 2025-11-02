@@ -20,6 +20,26 @@ You can run this script automatically every 30 minutes on your Android device us
 
 You can use `termux-job-scheduler` to schedule the script to run every 30 minutes (requires Termux:API app):
 
+#### Quick Setup (Recommended)
+
+1. **Install Termux:API:**
+   - Install the Termux:API app from F-Droid
+   - Install the API package: `pkg install termux-api`
+
+2. **Run the installation script:**
+   ```bash
+   ./install_scheduler.sh
+   ```
+   
+   This script will automatically:
+   - Update `run-scraper.sh` with the correct repository path
+   - Make the script executable
+   - Schedule the job to run every 30 minutes
+
+#### Manual Setup
+
+If you prefer to set up manually:
+
 1. **Install Termux:API:**
    - Install the Termux:API app from F-Droid
    - Install the API package: `pkg install termux-api`
