@@ -12,6 +12,112 @@ The script includes proper User-Agent headers to avoid 403 Forbidden errors.
 python3 scrape.py
 ```
 
+## Running on Termux (Android)
+
+You can run this script automatically every 30 minutes on your Android device using Termux. This is useful for continuously monitoring new fitness class availability.
+
+### Prerequisites
+
+First, install the required packages in Termux:
+
+```bash
+# Update packages
+pkg update && pkg upgrade
+
+# Install Python and required tools
+pkg install python git cronie termux-services
+
+# Install Python dependencies
+pip install requests
+```
+
+### Option 1: Using Cronie (Recommended)
+
+Cronie provides traditional cron functionality in Termux.
+
+1. **Start the cron service:**
+   ```bash
+   sv-enable crond
+   ```
+
+2. **Edit your crontab:**
+   ```bash
+   crontab -e
+   ```
+
+3. **Add the following line to run the script every 30 minutes:**
+   ```bash
+   */30 * * * * cd /data/data/com.termux/files/home/mcr_fit_sniper && python3 scrape.py >> scrape.log 2>&1
+   ```
+   
+   Note: Replace `/data/data/com.termux/files/home/mcr_fit_sniper` with the actual path to your cloned repository.
+
+4. **Save and exit the editor** (in nano: Ctrl+X, then Y, then Enter)
+
+5. **Verify the cron job is scheduled:**
+   ```bash
+   crontab -l
+   ```
+
+### Option 2: Using Termux:API Job Scheduler
+
+If you prefer using Android's native job scheduler, you can use `termux-job-scheduler` (requires Termux:API app):
+
+1. **Install Termux:API:**
+   - Install the Termux:API app from F-Droid
+   - Install the API package: `pkg install termux-api`
+
+2. **Create a script to run the scraper:**
+   ```bash
+   nano ~/run-scraper.sh
+   ```
+   
+   Add the following content:
+   ```bash
+   #!/data/data/com.termux/files/usr/bin/bash
+   cd ~/mcr_fit_sniper
+   python3 scrape.py >> scrape.log 2>&1
+   ```
+
+3. **Make the script executable:**
+   ```bash
+   chmod +x ~/run-scraper.sh
+   ```
+
+4. **Schedule the job to run every 30 minutes:**
+   ```bash
+   termux-job-scheduler --script ~/run-scraper.sh --period-ms 1800000
+   ```
+   
+   Note: 1800000 milliseconds = 30 minutes
+
+### Monitoring the Script
+
+To view the output from automated runs:
+
+```bash
+# View the last 50 lines of the log
+tail -n 50 ~/mcr_fit_sniper/scrape.log
+
+# Watch the log in real-time
+tail -f ~/mcr_fit_sniper/scrape.log
+```
+
+### Keeping Termux Running
+
+For the scheduled tasks to work reliably:
+
+1. **Acquire a wakelock** to prevent Termux from being killed:
+   ```bash
+   termux-wake-lock
+   ```
+
+2. **Disable battery optimization** for Termux in Android settings:
+   - Go to Settings → Apps → Termux
+   - Battery → Unrestricted
+
+3. Consider using **Termux:Boot** to start services automatically on device boot.
+
 ## Troubleshooting 403 Errors
 
 If you're getting a **403 Forbidden** error when running scrape.py, we've provided diagnostic tools to help:
