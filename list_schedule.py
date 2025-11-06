@@ -18,8 +18,7 @@ from typing import Optional
 
 
 def is_termux() -> bool:
-    """
-    Check if the script is running in Termux environment.
+    """Check if the script is running in Termux environment.
     
     Returns:
         bool: True if running in Termux, False otherwise
@@ -29,8 +28,7 @@ def is_termux() -> bool:
 
 
 def check_termux_api_installed() -> bool:
-    """
-    Check if termux-api package is installed.
+    """Check if termux-api package is installed.
     
     Returns:
         bool: True if termux-job-scheduler command is available, False otherwise
@@ -47,8 +45,7 @@ def check_termux_api_installed() -> bool:
 
 
 def get_scheduled_jobs() -> Optional[str]:
-    """
-    Retrieve scheduled jobs from termux-job-scheduler.
+    """Retrieve scheduled jobs from termux-job-scheduler.
     
     Returns:
         Optional[str]: Output from termux-job-scheduler --show command, or None if failed
@@ -76,8 +73,7 @@ def get_scheduled_jobs() -> Optional[str]:
 
 
 def parse_and_display_jobs(output: str) -> None:
-    """
-    Parse and display scheduled jobs in a readable format.
+    """Parse and display scheduled jobs in a readable format.
     
     Args:
         output: Raw output from termux-job-scheduler --show
@@ -126,8 +122,7 @@ def parse_and_display_jobs(output: str) -> None:
 
 
 def main() -> int:
-    """
-    Main function to list termux-job-scheduler schedules.
+    """Main function to list termux-job-scheduler schedules.
     
     Returns:
         int: Exit code (0 for success, non-zero for error)
