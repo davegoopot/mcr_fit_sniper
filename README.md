@@ -73,6 +73,22 @@ tail -n 50 ~/mcr_fit_sniper/scrape.log
 tail -f ~/mcr_fit_sniper/scrape.log
 ```
 
+### Managing Scheduled Jobs
+
+To view all pending scheduled jobs:
+
+```bash
+termux-job-scheduler --pending
+```
+
+To cancel a specific scheduled job:
+
+```bash
+termux-job-scheduler --cancel --job-id 0
+```
+
+Replace `0` with the appropriate job ID from the pending jobs list.
+
 ### Keeping Termux Running
 
 The `termux-job-scheduler` uses Android's JobScheduler API, which handles scheduling reliably in the background. However:

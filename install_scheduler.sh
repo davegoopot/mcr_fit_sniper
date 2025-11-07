@@ -52,10 +52,10 @@ if [ $? -eq 0 ]; then
     echo "  tail -f $REPO_DIR/scrape.log"
     echo ""
     echo "To check scheduled jobs:"
-    echo "  termux-job-scheduler --show"
+    echo "  termux-job-scheduler --pending"
     echo ""
-    echo "To cancel the scheduled job:"
-    echo "  termux-job-scheduler --cancel-all"
+    echo "To cancel a scheduled job:"
+    echo "  termux-job-scheduler --cancel --job-id 0"
     echo ""
 else
     echo "ERROR: Failed to schedule job"
