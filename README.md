@@ -10,24 +10,7 @@ The script uses a scraper-friendly User-Agent that properly identifies the bot a
 
 ```bash
 python3 scrape.py
-# or with uv
-uv run scrape.py
 ```
-
-### list_schedule.py
-Standalone utility script to list all registered termux-job-scheduler schedules.
-
-```bash
-python3 list_schedule.py
-# or with uv
-uv run list_schedule.py
-```
-
-This script will:
-- Display all scheduled jobs configured with termux-job-scheduler
-- Show job details including script path, period, and other settings
-- Provide helpful commands for managing scheduled jobs
-- Work both in Termux and non-Termux environments (with warnings)
 
 ## Running on Termux (Android)
 
@@ -78,18 +61,8 @@ If you prefer to set up manually:
    
    Note: 1800000 milliseconds = 30 minutes
 
-### Managing Scheduled Jobs
+### Monitoring the Script
 
-#### List scheduled jobs
-To view all registered scheduled jobs:
-
-```bash
-python3 list_schedule.py
-# or with uv
-uv run list_schedule.py
-```
-
-#### View logs
 To view the output from automated runs (replace `~/mcr_fit_sniper` with your repository path):
 
 ```bash
@@ -100,12 +73,21 @@ tail -n 50 ~/mcr_fit_sniper/scrape.log
 tail -f ~/mcr_fit_sniper/scrape.log
 ```
 
-#### Cancel scheduled jobs
-To cancel all scheduled jobs:
+### Managing Scheduled Jobs
+
+To view all pending scheduled jobs:
 
 ```bash
-termux-job-scheduler --cancel-all
+termux-job-scheduler --pending
 ```
+
+To cancel a specific scheduled job:
+
+```bash
+termux-job-scheduler --cancel --job-id 0
+```
+
+Replace `0` with the appropriate job ID from the pending jobs list.
 
 ### Keeping Termux Running
 
